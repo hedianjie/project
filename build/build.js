@@ -1454,6 +1454,16 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -1465,12 +1475,13 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
             institution_code: '', // 机构代码
             marketing_number: '', //营销人员工号
             id_number: '', // 身份证号 
-            company_name: '' // 公司名称
+            company_name: '', // 公司名称
+            err_tip: { key: '', tip: '' }
         };
     },
     methods: {
         refresh() {
-            [this.tab, this.phone_list, this.institution_code, this.marketing_number, this.id_number, this.company_name] = [1, [], '', '', '', ''];
+            [this.phone_list, this.institution_code, this.marketing_number, this.id_number, this.company_name, this.err_tip.key, this.err_tip.tip] = [[], '', '', '', '', '', ''];
         },
         addList() {
             // 最多不能超过4个手机号
@@ -1490,7 +1501,46 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
         },
         submit() {
 
-            const { tab, phone_list, institution_code, marketing_number, id_number, company_name } = this;
+            const { err_tip, tab, phone_list, institution_code, marketing_number, id_number, company_name } = this;
+
+            if (!institution_code.replace(/^ +| +$/, '')) ;{
+                [err_tip.key, err_tip.tip] = ['institution_code', '请填写机构代码！'];
+                alert('情填写机构代码！');
+                return;
+            }
+
+            if (!marketing_number.replace(/^ +| +$/, '')) ;{
+                [err_tip.key, err_tip.tip] = ['marketing_number', '请填写营销人员工号！'];
+                alert('情填写营销人员工号！');
+                return;
+            }
+
+            if (!id_number.replace(/^ +| +$/, '')) ;{
+                [err_tip.key, err_tip.tip] = ['id_number', '请填写身份证号码！'];
+                alert('情填写身份证号码！');
+                return;
+            }
+
+            if (!company_name.replace(/^ +| +$/, '') && tab === 1) ;{
+                [err_tip.key, err_tip.tip] = ['company_name', '请填写客户就职单位名称！'];
+                alert('情填写客户就职单位名称！');
+                return;
+            }
+
+            if (phone_list.length === 0) {
+                alert('请至少填写一个手机号！');
+                return;
+            }
+
+            let total = 0;
+            for (let key of phone_list) {
+                total += Number(key.proportion);
+            }
+
+            if (total !== 100) {
+                alert('话费比例总和需要等于100%');
+                return;
+            }
 
             $.ajax({
                 type: 'POST',
@@ -1516,7 +1566,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     },
     watch: {
         tab() {
-            [this.phone_list, this.institution_code, this.marketing_number, this.id_number, this.company_name] = [[], '', '', '', ''];
+            this.refresh();
         },
 
         phone_list: {
@@ -14262,7 +14312,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\nh4[data-v-c9ed8514]{\n    font-weight: 400;\n    text-align: center;\n    margin-bottom: 30px;\n    font-size: 26px;\n}\n.layout[data-v-c9ed8514]{\n    position: relative;\n    padding-top: 170px;\n    height: 100%;\n    background: url(" + escape(__webpack_require__(29)) + ") 0 0 no-repeat;\n    background-size: 100% 100%;\n    /* margin-top: -90px; */\n}\n.layout .containter[data-v-c9ed8514]{\n    position: relative;\n    left: 0;\n    right: 0;\n    margin: auto;\n    padding: 50px 300px;\n    width: 980px;\n    background: #fff;\n    box-shadow: 0 0 8px #ddd;\n    border-radius: 4px;\n    min-height: 100%;\n    margin-top: -90px;\n}\n.nav-tabs .tab-list[data-v-c9ed8514]{\n    display: inline-block;\n    height: 32px;\n    line-height: 30px;\n    padding: 0 16px;\n    font-size: 14px;\n    color: #495060;\n    transition: all .2s ease-in-out;\n    cursor: pointer;\n    border: 1px solid #dddee1;\n    background: #fff;\n    position: relative;\n    margin-right: -1px;\n}\n.nav-tabs .tab-list.active[data-v-c9ed8514] {\n    border: 1px solid #2d8cf0;\n    color: #2d8cf0;\n    z-index: 1;\n}\n.form-group[data-v-c9ed8514]{\n    margin-bottom: 25px;\n}\n.form-group label[data-v-c9ed8514]{\n    position: relative;\n    margin-bottom: 10px;\n    font-size: 14px;\n    color: #333;\n    display: inline-block;\n    font-weight: 300;\n    padding-left: 10px;\n    letter-spacing: 1px;\n}\n.form-group label[data-v-c9ed8514]::before{\n    content: \"\";\n    position: absolute;\n    left: 0;\n    top: 0px;\n    background: #2d8cf0;\n    width: 3px;\n    height: 15px;\n}\n.form-group label a[data-v-c9ed8514]{\n    color: #2d8cf0;\n    font-weight: 400;\n    text-decoration: none;\n}\n.form-group label a[data-v-c9ed8514]:hover{\n    text-decoration: underline;\n}\n.form-control[data-v-c9ed8514]{\n    box-shadow: 0 1px 1px 0 #f6f6f6 inset;\n    border: 1px solid #ccc;\n    background-color: #fff;\n    padding: 0 10px;\n    outline: none;\n    vertical-align: middle;\n    border-radius: 2px;\n    height: 40px;\n    width: 100%;\n}\n.form-control[data-v-c9ed8514]:disabled{\n    background: #eee;\n}\n.btn-group[data-v-c9ed8514]{\n    text-align: center;\n    margin-top: 20px;\n}\n.btn[data-v-c9ed8514]{\n    padding: 0 24px;\n    line-height: 34px;\n    display: inline-block;\n    color: #fff;\n    margin: 0 3px;\n    border-radius: 3px;\n    cursor: pointer;\n}\n.btn-submit[data-v-c9ed8514]{\n    background: #2d8cf0;\n    border: #0063ce;\n}\n.btn-submit[data-v-c9ed8514]:hover{\n    background: #0a79f0;\n}\n.btn-refresh[data-v-c9ed8514]{\n    background: #caa755;\n    border: #c28800;\n}\n.btn-refresh[data-v-c9ed8514]:hover{\n    background: #ce9c28;\n}\n.btn-danger[data-v-c9ed8514]{\n    background: #F3565D;\n    border: 1px solid #f13e46;\n}\n.btn-danger[data-v-c9ed8514]:hover{\n    background: #f1353d;\n    border: 1px solid #ec111b;\n}\n.line[data-v-c9ed8514]{\n    margin-bottom: 25px;\n    border-top: 1px dashed #ccc;\n}\n.tip[data-v-c9ed8514]{\n    font-size: 12px; \n    color: #999;\n}\n.phone-list .form-content[data-v-c9ed8514]{\n    overflow: hidden;\n    margin-bottom: 15px;\n}\n.phone-list .form-content[data-v-c9ed8514]:last-child {\n    margin-bottom: 0;\n}\n.phone-list input[data-v-c9ed8514],\n.phone-list select[data-v-c9ed8514],\n.phone-list .btn[data-v-c9ed8514]{\n    float: left;\n}\n.phone-list input[data-v-c9ed8514] {\n    position: relative;\n    z-index: 1;\n    width: 50%;\n    border-radius: 2px 0 0 2px;\n}\n.phone-list select[data-v-c9ed8514] {\n    width: 30%;\n    /* margin-left: -3px;\n    margin-right: -3px; */\n    border-radius: 0;\n    padding: 0 10px;\n    /* appearance:none; */\n    -moz-appearance:none;\n    -webkit-appearance:none;\n    -webkit-border-radius: 0;\n    -moz-border-radius: 0;\n    -khtml-border-radius: 0;\n    border-left: 0;\n    border-right: 0;\n}\n.phone-list .btn[data-v-c9ed8514] {\n    position: relative;\n    z-index: 1;\n    width: 20%;\n    line-height: 38px;\n    padding: 0;\n    text-align: center;\n    margin: 0;\n    border-radius: 0 2px 2px 0;\n}\n", ""]);
+exports.push([module.i, "\nh4[data-v-c9ed8514]{\n    font-weight: 400;\n    text-align: center;\n    margin-bottom: 30px;\n    font-size: 26px;\n}\n.layout[data-v-c9ed8514]{\n    position: relative;\n    padding-top: 170px;\n    height: 100%;\n    background: url(" + escape(__webpack_require__(29)) + ") 0 0 no-repeat;\n    background-size: 100% 100%;\n    /* margin-top: -90px; */\n}\n.layout .containter[data-v-c9ed8514]{\n    position: relative;\n    left: 0;\n    right: 0;\n    margin: auto;\n    padding: 50px 300px;\n    width: 980px;\n    background: #fff;\n    box-shadow: 0 0 8px #ddd;\n    border-radius: 4px;\n    min-height: 100%;\n    margin-top: -90px;\n}\n.nav-tabs .tab-list[data-v-c9ed8514]{\n    display: inline-block;\n    height: 32px;\n    line-height: 30px;\n    padding: 0 16px;\n    font-size: 14px;\n    color: #495060;\n    transition: all .2s ease-in-out;\n    cursor: pointer;\n    border: 1px solid #dddee1;\n    background: #fff;\n    position: relative;\n    margin-right: -1px;\n}\n.nav-tabs .tab-list.active[data-v-c9ed8514] {\n    border: 1px solid #2d8cf0;\n    color: #2d8cf0;\n    z-index: 1;\n}\n.form-group[data-v-c9ed8514]{\n    margin-bottom: 25px;\n}\n.form-group label[data-v-c9ed8514]{\n    position: relative;\n    margin-bottom: 10px;\n    font-size: 14px;\n    color: #333;\n    display: inline-block;\n    font-weight: 300;\n    padding-left: 10px;\n    letter-spacing: 1px;\n}\n.form-group label[data-v-c9ed8514]::before{\n    content: \"\";\n    position: absolute;\n    left: 0;\n    top: 0px;\n    background: #2d8cf0;\n    width: 3px;\n    height: 15px;\n}\n.form-group label a[data-v-c9ed8514]{\n    color: #2d8cf0;\n    font-weight: 400;\n    text-decoration: none;\n}\n.form-group label a[data-v-c9ed8514]:hover{\n    text-decoration: underline;\n}\n.form-control[data-v-c9ed8514]{\n    box-shadow: 0 1px 1px 0 #f6f6f6 inset;\n    border: 1px solid #ccc;\n    background-color: #fff;\n    padding: 0 10px;\n    outline: none;\n    vertical-align: middle;\n    border-radius: 2px;\n    height: 40px;\n    width: 100%;\n}\n.form-control[data-v-c9ed8514]:disabled{\n    background: #eee;\n}\n.btn-group[data-v-c9ed8514]{\n    text-align: center;\n    margin-top: 20px;\n}\n.btn[data-v-c9ed8514]{\n    padding: 0 24px;\n    line-height: 34px;\n    display: inline-block;\n    color: #fff;\n    margin: 0 3px;\n    border-radius: 3px;\n    cursor: pointer;\n}\n.btn-submit[data-v-c9ed8514]{\n    background: #2d8cf0;\n    border: #0063ce;\n}\n.btn-submit[data-v-c9ed8514]:hover{\n    background: #0a79f0;\n}\n.btn-refresh[data-v-c9ed8514]{\n    background: #caa755;\n    border: #c28800;\n}\n.btn-refresh[data-v-c9ed8514]:hover{\n    background: #ce9c28;\n}\n.btn-danger[data-v-c9ed8514]{\n    background: #F3565D;\n    border: 1px solid #f13e46;\n}\n.btn-danger[data-v-c9ed8514]:hover{\n    background: #f1353d;\n    border: 1px solid #ec111b;\n}\n.line[data-v-c9ed8514]{\n    margin-bottom: 25px;\n    border-top: 1px dashed #ccc;\n}\n.tip[data-v-c9ed8514]{\n    font-size: 12px; \n    color: #999;\n}\n.phone-list .form-content[data-v-c9ed8514]{\n    overflow: hidden;\n    margin-bottom: 15px;\n}\n.phone-list .form-content[data-v-c9ed8514]:last-child {\n    margin-bottom: 0;\n}\n.phone-list input[data-v-c9ed8514],\n.phone-list select[data-v-c9ed8514],\n.phone-list .btn[data-v-c9ed8514]{\n    float: left;\n}\n.phone-list input[data-v-c9ed8514] {\n    position: relative;\n    z-index: 1;\n    width: 50%;\n    border-radius: 2px 0 0 2px;\n}\n.phone-list select[data-v-c9ed8514] {\n    width: 30%;\n    /* margin-left: -3px;\n    margin-right: -3px; */\n    border-radius: 0;\n    padding: 0 10px;\n    /* appearance:none; */\n    -moz-appearance:none;\n    -webkit-appearance:none;\n    -webkit-border-radius: 0;\n    -moz-border-radius: 0;\n    -khtml-border-radius: 0;\n    border-left: 0;\n    border-right: 0;\n}\n.phone-list .btn[data-v-c9ed8514] {\n    position: relative;\n    z-index: 1;\n    width: 20%;\n    line-height: 38px;\n    padding: 0;\n    text-align: center;\n    margin: 0;\n    border-radius: 0 2px 2px 0;\n}\n.err-tip[data-v-c9ed8514]{\n    margin-top: 5px;\n    color: #d40303;\n    font-size: 12px;\n    letter-spacing: 1px;\n}\n", ""]);
 
 // exports
 
@@ -14537,7 +14587,13 @@ var render = function() {
                     _vm.institution_code = $event.target.value
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.err_tip.key == "institution_code"
+                ? _c("p", { staticClass: "err-tip" }, [
+                    _vm._v(_vm._s(_vm.err_tip.tip))
+                  ])
+                : _vm._e()
             ])
           ]),
           _vm._v(" "),
@@ -14565,7 +14621,13 @@ var render = function() {
                     _vm.marketing_number = $event.target.value
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.err_tip.key == "marketing_number"
+                ? _c("p", { staticClass: "err-tip" }, [
+                    _vm._v(_vm._s(_vm.err_tip.tip))
+                  ])
+                : _vm._e()
             ])
           ]),
           _vm._v(" "),
@@ -14593,7 +14655,13 @@ var render = function() {
                     _vm.id_number = $event.target.value
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.err_tip.key == "id_number"
+                ? _c("p", { staticClass: "err-tip" }, [
+                    _vm._v(_vm._s(_vm.err_tip.tip))
+                  ])
+                : _vm._e()
             ])
           ]),
           _vm._v(" "),
@@ -14625,7 +14693,13 @@ var render = function() {
                     _vm.company_name = $event.target.value
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _vm.err_tip.key == "company_name"
+                ? _c("p", { staticClass: "err-tip" }, [
+                    _vm._v(_vm._s(_vm.err_tip.tip))
+                  ])
+                : _vm._e()
             ])
           ]),
           _vm._v(" "),

@@ -16,6 +16,7 @@
                     <label for="">机构代码</label>
                     <div class="form-content">
                         <input v-model="institution_code" placeholder="请输入机构代码" type="text" class="form-control">
+                        <p class="err-tip" v-if="err_tip.key == 'institution_code'">{{err_tip.tip}}</p>
                     </div>
                 </div>
                 <!-- 营销人员工号 -->
@@ -23,6 +24,7 @@
                     <label for="">营销人员工号</label>
                     <div class="form-content">
                         <input v-model="marketing_number" placeholder="请输入营销人员工号" type="text" class="form-control">
+                        <p class="err-tip" v-if="err_tip.key == 'marketing_number'">{{err_tip.tip}}</p>
                     </div>
                 </div>
                 <!-- 身份证号 -->
@@ -30,6 +32,7 @@
                     <label for="">身份证号</label>
                     <div class="form-content">
                         <input v-model="id_number" placeholder="请输入身份证号" type="text" class="form-control">
+                        <p class="err-tip" v-if="err_tip.key == 'id_number'">{{err_tip.tip}}</p>
                     </div>
                 </div>
                 <!-- 客户就职单位名称 -->
@@ -37,6 +40,7 @@
                     <label for="">客户就职单位名称</label>
                     <div class="form-content">
                         <input :disabled="(tab == 0) ? true: false" v-model="company_name" placeholder="请输入客户就职单位名称" type="text" class="form-control">
+                        <p class="err-tip" v-if="err_tip.key == 'company_name'">{{err_tip.tip}}</p>
                     </div>
                 </div>
 
@@ -254,6 +258,12 @@
         margin: 0;
         border-radius: 0 2px 2px 0;
     }
+    .err-tip{
+        margin-top: 5px;
+        color: #d40303;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
 </style>
 <script>
 import FooterComponents from './footer.vue';
@@ -266,14 +276,15 @@ export default {
             institution_code: '', // 机构代码
             marketing_number: '', //营销人员工号
             id_number: '', // 身份证号 
-            company_name: ''// 公司名称
+            company_name: '',// 公司名称
+            err_tip: { key: '', tip: ''},
         }
     },
     methods: {
         refresh() {
-            [this.tab, this.phone_list, this.institution_code, this.marketing_number, this.id_number, this.company_name]
+            [this.phone_list, this.institution_code, this.marketing_number, this.id_number, this.company_name, this.err_tip.key, this.err_tip.tip]
             =
-            [1, [], '', '', '', '']
+            [[], '', '', '', '', '', ''];
         },
         addList() {
             // 最多不能超过4个手机号
@@ -294,7 +305,48 @@ export default {
         },
         submit() {
 
-            const {tab, phone_list, institution_code, marketing_number, id_number, company_name} = this;
+            const {err_tip, tab, phone_list, institution_code, marketing_number, id_number, company_name} = this;
+
+            if (!institution_code.replace(/^ +| +$/, ''));{
+                [err_tip.key, err_tip.tip] = ['institution_code', '请填写机构代码！'];
+                alert('情填写机构代码！');
+                return;
+            }
+
+            if (!marketing_number.replace(/^ +| +$/, ''));{
+                [err_tip.key, err_tip.tip] = ['marketing_number', '请填写营销人员工号！'];
+                alert('情填写营销人员工号！');
+                return;
+            }
+
+            if (!id_number.replace(/^ +| +$/, ''));{
+                [err_tip.key, err_tip.tip] = ['id_number', '请填写身份证号码！'];
+                alert('情填写身份证号码！');
+                return;
+            }
+
+            if (!company_name.replace(/^ +| +$/, '') && tab === 1);{
+                [err_tip.key, err_tip.tip] = ['company_name', '请填写客户就职单位名称！'];
+                alert('情填写客户就职单位名称！');
+                return;
+            }
+
+            if(phone_list.length === 0) {
+                alert('请至少填写一个手机号！');
+                return;
+            }
+
+            let total = 0;
+            for(let key of phone_list) {
+                total += Number(key.proportion);
+            }
+
+            if ( total !== 100 ) {
+                alert('话费比例总和需要等于100%');
+                return;
+            }
+
+
 
             $.ajax({
                 type: 'POST',
@@ -320,9 +372,7 @@ export default {
     },
     watch: { 
         tab() {
-            [this.phone_list, this.institution_code, this.marketing_number, this.id_number, this.company_name]
-            =
-            [[], '', '', '', '']
+           this.refresh();
         },
 
         phone_list: {
