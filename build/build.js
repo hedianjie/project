@@ -1427,10 +1427,108 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    components: { FooterComponents: __WEBPACK_IMPORTED_MODULE_0__footer_vue__["a" /* default */] }
+    components: { FooterComponents: __WEBPACK_IMPORTED_MODULE_0__footer_vue__["a" /* default */] },
+    data() {
+        return {
+            tab: 1, // 1 -> 移动集团用户 0 -> 非移动集团用户 默认 1
+            phone_list: [], // 手机号列表 { phone_number: 1556770XXXX, proportion: 100 }
+            institution_code: '', // 机构代码
+            marketing_number: '', //营销人员工号
+            id_number: '', // 身份证号 
+            company_name: '' // 公司名称
+        };
+    },
+    methods: {
+        refresh() {
+            [this.tab, this.phone_list, this.institution_code, this.marketing_number, this.id_number, this.company_name] = [1, [], '', '', '', ''];
+        },
+        addList() {
+            // 最多不能超过4个手机号
+            if (this.phone_list.length === 4) {
+                alert('最多可添加4个手机号!');
+                return;
+            }
+            // 如果是第一个 默认100%比例
+            if (this.phone_list.length === 0) {
+                this.phone_list.push({ phone_list: '', proportion: '100' });
+            } else {
+                this.phone_list.push({ phone_list: '', proportion: '' });
+            }
+        },
+        delList(index) {
+            this.phone_list.splice(index, 1);
+        },
+        submit() {
+
+            const { tab, phone_list, institution_code, marketing_number, id_number, company_name } = this;
+
+            $.ajax({
+                type: 'POST',
+                url: '/',
+                dataType: 'json',
+                data: {
+                    tab,
+                    phone_list,
+                    institution_code,
+                    marketing_number,
+                    id_number,
+                    company_name
+                },
+                success(result) {
+                    console.log(result);
+                },
+                error(err) {
+                    alert('后台错误！请稍后重试……');
+                }
+
+            });
+        }
+    },
+    watch: {
+        tab() {
+            [this.phone_list, this.institution_code, this.marketing_number, this.id_number, this.company_name] = [[], '', '', '', ''];
+        },
+
+        phone_list: {
+            handler() {
+                if (this.phone_list.length === 1) {
+                    this.phone_list[0].proportion = '100';
+                }
+            },
+            deep: true
+        }
+
+    }
 });
 
 /***/ }),
@@ -1589,7 +1687,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "/* http://meyerweb.com/eric/tools/css/reset/ \r\n   v2.0 | 20110126\r\n   License: none (public domain)\r\n*/\r\n\r\nhtml, body, div, span, applet, object, iframe,\r\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\r\na, abbr, acronym, address, big, cite, code,\r\ndel, dfn, em, img, ins, kbd, q, s, samp,\r\nsmall, strike, strong, sub, sup, tt, var,\r\nb, u, i, center,\r\ndl, dt, dd, ol, ul, li,\r\nfieldset, form, label, legend,\r\ntable, caption, tbody, tfoot, thead, tr, th, td,\r\narticle, aside, canvas, details, embed, \r\nfigure, figcaption, footer, header, hgroup, \r\nmenu, nav, output, ruby, section, summary,\r\ntime, mark, audio, video {\r\n\tmargin: 0;\r\n\tpadding: 0;\r\n\tborder: 0;\r\n\tfont-size: 100%;\r\n\tfont: inherit;\r\n\tvertical-align: baseline;\r\n}\r\n/* HTML5 display-role reset for older browsers */\r\narticle, aside, details, figcaption, figure, \r\nfooter, header, hgroup, menu, nav, section {\r\n\tdisplay: block;\r\n}\r\nbody {\r\n\tline-height: 1;\r\n}\r\nol, ul {\r\n\tlist-style: none;\r\n}\r\nblockquote, q {\r\n\tquotes: none;\r\n}\r\nblockquote:before, blockquote:after,\r\nq:before, q:after {\r\n\tcontent: '';\r\n\tcontent: none;\r\n}\r\ntable {\r\n\tborder-collapse: collapse;\r\n\tborder-spacing: 0;\r\n}", ""]);
+exports.push([module.i, "/* http://meyerweb.com/eric/tools/css/reset/ \n   v2.0 | 20110126\n   License: none (public domain)\n*/\n\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed, \nfigure, figcaption, footer, header, hgroup, \nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n\tmargin: 0;\n\tpadding: 0;\n\tborder: 0;\n\tfont-size: 100%;\n\tfont: inherit;\n\tvertical-align: baseline;\n}\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure, \nfooter, header, hgroup, menu, nav, section {\n\tdisplay: block;\n}\nbody {\n\tline-height: 1;\n}\nol, ul {\n\tlist-style: none;\n}\nblockquote, q {\n\tquotes: none;\n}\nblockquote:before, blockquote:after,\nq:before, q:after {\n\tcontent: '';\n\tcontent: none;\n}\ntable {\n\tborder-collapse: collapse;\n\tborder-spacing: 0;\n}", ""]);
 
 // exports
 
@@ -1748,7 +1846,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "*{\r\n    box-sizing: border-box;\r\n}\r\nhtml,\r\nbody{\r\n    height: 100%;\r\n    background: #f1f1f1;\r\n    font-size: 14px;\r\n    color: #222;\r\n    font-family: -apple-system,\"Helvetica Neue\",Helvetica,Arial,\"PingFang SC\",\"Hiragino Sans GB\",STHeiti,\"Microsoft YaHei\",\"Microsoft JhengHei\",SimSun,sans-serif;\r\n}", ""]);
+exports.push([module.i, "*{\n    box-sizing: border-box;\n}\nhtml,\nbody{\n    height: 100%;\n    background: #f1f1f1;\n    font-size: 14px;\n    color: #222;\n    font-family: -apple-system,\"Helvetica Neue\",Helvetica,Arial,\"PingFang SC\",\"Hiragino Sans GB\",STHeiti,\"Microsoft YaHei\",\"Microsoft JhengHei\",SimSun,sans-serif;\n}", ""]);
 
 // exports
 
@@ -13984,7 +14082,7 @@ var content = __webpack_require__(22);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("7c2a7c99", content, false, {});
+var update = __webpack_require__(2)("38fe52d9", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -14139,7 +14237,7 @@ var content = __webpack_require__(27);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("b974962c", content, false, {});
+var update = __webpack_require__(2)("ec7729ac", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -14164,7 +14262,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\nh4[data-v-c9ed8514]{\n    font-weight: 400;\n    text-align: center;\n    margin-bottom: 30px;\n    font-size: 26px;\n}\n.layout[data-v-c9ed8514]{\n    position: relative;\n    padding-top: 170px;\n    height: 100%;\n    background: url(" + escape(__webpack_require__(29)) + ") 0 0 no-repeat;\n    background-size: 100% 100%;\n    /* margin-top: -90px; */\n}\n.layout .containter[data-v-c9ed8514]{\n    position: relative;\n    left: 0;\n    right: 0;\n    margin: auto;\n    padding: 50px 300px;\n    width: 980px;\n    background: #fff;\n    box-shadow: 0 0 8px #ddd;\n    border-radius: 4px;\n    min-height: 100%;\n    margin-top: -90px;\n}\n.nav-tabs .tab-list[data-v-c9ed8514]{\n    display: inline-block;\n    height: 32px;\n    line-height: 30px;\n    padding: 0 16px;\n    font-size: 14px;\n    color: #495060;\n    transition: all .2s ease-in-out;\n    cursor: pointer;\n    border: 1px solid #dddee1;\n    background: #fff;\n    position: relative;\n    margin-right: -1px;\n}\n.nav-tabs .tab-list.active[data-v-c9ed8514] {\n    border: 1px solid #2d8cf0;\n    color: #2d8cf0;\n    z-index: 1;\n}\n.form-group[data-v-c9ed8514]{\n    margin-bottom: 25px;\n}\n.form-group label[data-v-c9ed8514]{\n    position: relative;\n    margin-bottom: 10px;\n    font-size: 14px;\n    color: #333;\n    display: inline-block;\n    font-weight: 100;\n    padding-left: 10px;\n    letter-spacing: 1px;\n}\n.form-group label[data-v-c9ed8514]::before{\n    content: \"\";\n    position: absolute;\n    left: 0;\n    top: 0px;\n    background: #2d8cf0;\n    width: 3px;\n    height: 15px;\n}\n.form-group label a[data-v-c9ed8514]{\n    color: #2d8cf0;\n    text-decoration: none;\n}\n.form-group label a[data-v-c9ed8514]:hover{\n    text-decoration: underline;\n}\n.form-control[data-v-c9ed8514]{\n    box-shadow: 0 1px 1px 0 #f6f6f6 inset;\n    border: 1px solid #ccc;\n    background-color: #fff;\n    padding: 0 10px;\n    outline: none;\n    vertical-align: middle;\n    border-radius: 2px;\n    height: 40px;\n    width: 100%;\n}\n.btn-group[data-v-c9ed8514]{\n    text-align: center;\n    margin-top: 20px;\n}\n.btn[data-v-c9ed8514]{\n    padding: 0 24px;\n    line-height: 34px;\n    display: inline-block;\n    color: #fff;\n    margin: 0 3px;\n    border-radius: 3px;\n    cursor: pointer;\n}\n.btn-submit[data-v-c9ed8514]{\n    background: #2d8cf0;\n    border: #0063ce;\n}\n.btn-submit[data-v-c9ed8514]:hover{\n    background: #0a79f0;\n}\n.btn-refresh[data-v-c9ed8514]{\n    background: #caa755;\n    border: #c28800;\n}\n.btn-refresh[data-v-c9ed8514]:hover{\n    background: #ce9c28;\n}\n.btn-danger[data-v-c9ed8514]{\n    background: #F3565D;\n    border: 1px solid #f13e46;\n}\n.btn-danger[data-v-c9ed8514]:hover{\n    background: #f1353d;\n    border: 1px solid #ec111b;\n}\n.line[data-v-c9ed8514]{\n    margin-bottom: 25px;\n    border-top: 1px dashed #ccc;\n}\n.tip[data-v-c9ed8514]{\n    font-size: 12px; \n    color: #999;\n}\n.phone-list[data-v-c9ed8514]{\n    overflow: hidden;\n}\n.phone-list input[data-v-c9ed8514],\n.phone-list select[data-v-c9ed8514],\n.phone-list .btn[data-v-c9ed8514]{\n    float: left;\n}\n.phone-list input[data-v-c9ed8514] {\n    width: 40%;\n    border-radius: 2px 0 0 2px;\n}\n.phone-list select[data-v-c9ed8514] {\n    width: 40%;\n    border-radius: 0;\n    border-left: 0;\n    border-right: 0;\n}\n.phone-list .btn[data-v-c9ed8514] {\n    width: 20%;\n    line-height: 38px;\n    padding: 0;\n    text-align: center;\n    margin: 0;\n    border-radius: 0 2px 2px 0;\n}\n", ""]);
+exports.push([module.i, "\nh4[data-v-c9ed8514]{\n    font-weight: 400;\n    text-align: center;\n    margin-bottom: 30px;\n    font-size: 26px;\n}\n.layout[data-v-c9ed8514]{\n    position: relative;\n    padding-top: 170px;\n    height: 100%;\n    background: url(" + escape(__webpack_require__(29)) + ") 0 0 no-repeat;\n    background-size: 100% 100%;\n    /* margin-top: -90px; */\n}\n.layout .containter[data-v-c9ed8514]{\n    position: relative;\n    left: 0;\n    right: 0;\n    margin: auto;\n    padding: 50px 300px;\n    width: 980px;\n    background: #fff;\n    box-shadow: 0 0 8px #ddd;\n    border-radius: 4px;\n    min-height: 100%;\n    margin-top: -90px;\n}\n.nav-tabs .tab-list[data-v-c9ed8514]{\n    display: inline-block;\n    height: 32px;\n    line-height: 30px;\n    padding: 0 16px;\n    font-size: 14px;\n    color: #495060;\n    transition: all .2s ease-in-out;\n    cursor: pointer;\n    border: 1px solid #dddee1;\n    background: #fff;\n    position: relative;\n    margin-right: -1px;\n}\n.nav-tabs .tab-list.active[data-v-c9ed8514] {\n    border: 1px solid #2d8cf0;\n    color: #2d8cf0;\n    z-index: 1;\n}\n.form-group[data-v-c9ed8514]{\n    margin-bottom: 25px;\n}\n.form-group label[data-v-c9ed8514]{\n    position: relative;\n    margin-bottom: 10px;\n    font-size: 14px;\n    color: #333;\n    display: inline-block;\n    font-weight: 300;\n    padding-left: 10px;\n    letter-spacing: 1px;\n}\n.form-group label[data-v-c9ed8514]::before{\n    content: \"\";\n    position: absolute;\n    left: 0;\n    top: 0px;\n    background: #2d8cf0;\n    width: 3px;\n    height: 15px;\n}\n.form-group label a[data-v-c9ed8514]{\n    color: #2d8cf0;\n    font-weight: 400;\n    text-decoration: none;\n}\n.form-group label a[data-v-c9ed8514]:hover{\n    text-decoration: underline;\n}\n.form-control[data-v-c9ed8514]{\n    box-shadow: 0 1px 1px 0 #f6f6f6 inset;\n    border: 1px solid #ccc;\n    background-color: #fff;\n    padding: 0 10px;\n    outline: none;\n    vertical-align: middle;\n    border-radius: 2px;\n    height: 40px;\n    width: 100%;\n}\n.form-control[data-v-c9ed8514]:disabled{\n    background: #eee;\n}\n.btn-group[data-v-c9ed8514]{\n    text-align: center;\n    margin-top: 20px;\n}\n.btn[data-v-c9ed8514]{\n    padding: 0 24px;\n    line-height: 34px;\n    display: inline-block;\n    color: #fff;\n    margin: 0 3px;\n    border-radius: 3px;\n    cursor: pointer;\n}\n.btn-submit[data-v-c9ed8514]{\n    background: #2d8cf0;\n    border: #0063ce;\n}\n.btn-submit[data-v-c9ed8514]:hover{\n    background: #0a79f0;\n}\n.btn-refresh[data-v-c9ed8514]{\n    background: #caa755;\n    border: #c28800;\n}\n.btn-refresh[data-v-c9ed8514]:hover{\n    background: #ce9c28;\n}\n.btn-danger[data-v-c9ed8514]{\n    background: #F3565D;\n    border: 1px solid #f13e46;\n}\n.btn-danger[data-v-c9ed8514]:hover{\n    background: #f1353d;\n    border: 1px solid #ec111b;\n}\n.line[data-v-c9ed8514]{\n    margin-bottom: 25px;\n    border-top: 1px dashed #ccc;\n}\n.tip[data-v-c9ed8514]{\n    font-size: 12px; \n    color: #999;\n}\n.phone-list .form-content[data-v-c9ed8514]{\n    overflow: hidden;\n    margin-bottom: 15px;\n}\n.phone-list .form-content[data-v-c9ed8514]:last-child {\n    margin-bottom: 0;\n}\n.phone-list input[data-v-c9ed8514],\n.phone-list select[data-v-c9ed8514],\n.phone-list .btn[data-v-c9ed8514]{\n    float: left;\n}\n.phone-list input[data-v-c9ed8514] {\n    position: relative;\n    z-index: 1;\n    width: 40%;\n    border-radius: 2px 0 0 2px;\n}\n.phone-list select[data-v-c9ed8514] {\n    width: 40%;\n    margin-left: -3px;\n    margin-right: -3px;\n    border-radius: 0;\n    padding: 0 13px;\n    /* appearance:none;\n    -moz-appearance:none;\n    -webkit-appearance:none; */\n    -webkit-border-radius: 0;\n    -moz-border-radius: 0;\n    -khtml-border-radius: 0;\n    border-left: 0;\n    border-right: 0;\n}\n.phone-list .btn[data-v-c9ed8514] {\n    position: relative;\n    z-index: 1;\n    width: 20%;\n    line-height: 38px;\n    padding: 0;\n    text-align: center;\n    margin: 0;\n    border-radius: 0 2px 2px 0;\n}\n", ""]);
 
 // exports
 
@@ -14264,7 +14362,7 @@ var content = __webpack_require__(32);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("519e9fc6", content, false, {});
+var update = __webpack_require__(2)("0e727606", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -14379,113 +14477,300 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "layout" },
-    [_vm._m(0), _vm._v(" "), _c("footer-components")],
-    1
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "containter" }, [
-      _c("h4", [_vm._v("客户话费回馈活动")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "nav-contents" }, [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "" } }, [_vm._v("选择集团客户")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "nav-tabs" }, [
-            _c("span", { staticClass: "tab-list active" }, [
-              _vm._v("移动集团客户")
-            ]),
-            _c("span", { staticClass: "tab-list" }, [_vm._v("非移动集团客户")])
-          ])
-        ]),
+    [
+      _c("div", { staticClass: "containter" }, [
+        _c("h4", [_vm._v("客户话费回馈活动")]),
         _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "" } }, [_vm._v("机构代码")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-content" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { placeholder: "请输入机构代码", type: "text" }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "" } }, [_vm._v("营销人员工号")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-content" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { placeholder: "请输入营销人员工号", type: "text" }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "" } }, [_vm._v("身份证号")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-content" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { placeholder: "请输入身份证号", type: "text" }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "" } }, [_vm._v("客户就职单位名称")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-content" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { placeholder: "请输入客户就职单位名称", type: "text" }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "line" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group phone-list" }, [
-          _c("label", { attrs: { for: "" } }, [
-            _vm._v("请添加手机号码 | "),
-            _c("a", { attrs: { href: "javascript:void(0);" } }, [
-              _vm._v("添加")
-            ]),
-            _vm._v(" "),
-            _c("span", { staticClass: "tip" }, [
-              _vm._v("(最多可添加4个手机号)")
+        _c("div", { staticClass: "nav-contents" }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("选择集团客户")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "nav-tabs" }, [
+              _c(
+                "span",
+                {
+                  class: "tab-list " + (_vm.tab == 1 ? "active" : ""),
+                  on: {
+                    click: function($event) {
+                      _vm.tab = 1
+                    }
+                  }
+                },
+                [_vm._v("移动集团客户")]
+              ),
+              _c(
+                "span",
+                {
+                  class: "tab-list " + (_vm.tab == 0 ? "active" : ""),
+                  on: {
+                    click: function($event) {
+                      _vm.tab = 0
+                    }
+                  }
+                },
+                [_vm._v("非移动集团客户")]
+              )
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "form-content" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { placeholder: "请输手机号码", type: "text" }
-            }),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("机构代码")]),
             _vm._v(" "),
-            _c("select", { staticClass: "form-control" }, [
-              _c("option", { attrs: { value: "" } }, [_vm._v("请分配话费比例")])
-            ]),
+            _c("div", { staticClass: "form-content" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.institution_code,
+                    expression: "institution_code"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { placeholder: "请输入机构代码", type: "text" },
+                domProps: { value: _vm.institution_code },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.institution_code = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("营销人员工号")]),
             _vm._v(" "),
-            _c("span", { staticClass: "btn btn-danger" }, [_vm._v("删 除")])
-          ])
+            _c("div", { staticClass: "form-content" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.marketing_number,
+                    expression: "marketing_number"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { placeholder: "请输入营销人员工号", type: "text" },
+                domProps: { value: _vm.marketing_number },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.marketing_number = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("身份证号")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-content" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.id_number,
+                    expression: "id_number"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { placeholder: "请输入身份证号", type: "text" },
+                domProps: { value: _vm.id_number },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.id_number = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("客户就职单位名称")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-content" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.company_name,
+                    expression: "company_name"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  disabled: _vm.tab == 0 ? true : false,
+                  placeholder: "请输入客户就职单位名称",
+                  type: "text"
+                },
+                domProps: { value: _vm.company_name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.company_name = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "line" }),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "form-group phone-list" },
+            [
+              _c("label", { attrs: { for: "" } }, [
+                _vm._v("请添加手机号码 | "),
+                _c(
+                  "a",
+                  {
+                    attrs: { href: "javascript:void(0);" },
+                    on: { click: _vm.addList }
+                  },
+                  [_vm._v("添加")]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "tip" }, [
+                  _vm._v("(最多可添加4个手机号)")
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.phone_list, function(item, index) {
+                return _c("div", { staticClass: "form-content" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: item.phone_number,
+                        expression: "item.phone_number"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { placeholder: "请输手机号码", type: "text" },
+                    domProps: { value: item.phone_number },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(item, "phone_number", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: item.proportion,
+                          expression: "item.proportion"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            item,
+                            "proportion",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "" } }, [
+                        _vm._v("请分配话费比例")
+                      ]),
+                      _vm._v(" "),
+                      _vm.phone_list.length === 1
+                        ? [
+                            _c("option", { attrs: { value: "100" } }, [
+                              _vm._v("100%")
+                            ])
+                          ]
+                        : _vm._l(100, function(item2) {
+                            return _c(
+                              "option",
+                              { domProps: { value: item2 } },
+                              [_vm._v(_vm._s(item2) + "%")]
+                            )
+                          })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    {
+                      staticClass: "btn btn-danger",
+                      on: {
+                        click: function($event) {
+                          return _vm.delList(index)
+                        }
+                      }
+                    },
+                    [_vm._v("删 除")]
+                  )
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "line" })
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "line" })
+        _c("div", { staticClass: "btn-group" }, [
+          _c(
+            "span",
+            { staticClass: "btn btn-submit", on: { click: _vm.submit } },
+            [_vm._v("提 交")]
+          ),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "btn btn-refresh", on: { click: _vm.refresh } },
+            [_vm._v("重 置")]
+          )
+        ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "btn-group" }, [
-        _c("span", { staticClass: "btn btn-submit" }, [_vm._v("提 交")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "btn btn-refresh" }, [_vm._v("重 置")])
-      ])
-    ])
-  }
-]
+      _c("footer-components")
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);

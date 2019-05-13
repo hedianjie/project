@@ -7,36 +7,36 @@
                 <div class="form-group">
                     <label for="">选择集团客户</label>
                     <div class="nav-tabs">
-                        <span class="tab-list active">移动集团客户</span><!-- 
-                        --><span class="tab-list">非移动集团客户</span>
+                        <span @click="tab = 1" :class="'tab-list ' + (tab == 1 ? 'active' : '')">移动集团客户</span><!-- 
+                        --><span @click="tab = 0" :class="'tab-list ' + (tab == 0 ? 'active' : '')">非移动集团客户</span>
                     </div>
                 </div>
                 <!-- 机构代码： -->
                 <div class="form-group">
                     <label for="">机构代码</label>
                     <div class="form-content">
-                        <input placeholder="请输入机构代码" type="text" class="form-control">
+                        <input v-model="institution_code" placeholder="请输入机构代码" type="text" class="form-control">
                     </div>
                 </div>
                 <!-- 营销人员工号 -->
                 <div class="form-group">
                     <label for="">营销人员工号</label>
                     <div class="form-content">
-                        <input placeholder="请输入营销人员工号" type="text" class="form-control">
+                        <input v-model="marketing_number" placeholder="请输入营销人员工号" type="text" class="form-control">
                     </div>
                 </div>
                 <!-- 身份证号 -->
                 <div class="form-group">
                     <label for="">身份证号</label>
                     <div class="form-content">
-                        <input placeholder="请输入身份证号" type="text" class="form-control">
+                        <input v-model="id_number" placeholder="请输入身份证号" type="text" class="form-control">
                     </div>
                 </div>
                 <!-- 客户就职单位名称 -->
                 <div class="form-group">
                     <label for="">客户就职单位名称</label>
                     <div class="form-content">
-                        <input placeholder="请输入客户就职单位名称" type="text" class="form-control">
+                        <input :disabled="(tab == 0) ? true: false" v-model="company_name" placeholder="请输入客户就职单位名称" type="text" class="form-control">
                     </div>
                 </div>
 
@@ -44,13 +44,19 @@
 
                 <!-- 手机号码 -->
                 <div class="form-group phone-list">
-                    <label for="">请添加手机号码&nbsp;|&nbsp;<a href="javascript:void(0);">添加</a>&nbsp;<span class="tip">(最多可添加4个手机号)</span></label>
-                    <div class="form-content">
-                        <input placeholder="请输手机号码" type="text" class="form-control">
-                        <select class="form-control">
+                    <label for="">请添加手机号码&nbsp;|&nbsp;<a @click="addList" href="javascript:void(0);">添加</a>&nbsp;<span class="tip">(最多可添加4个手机号)</span></label>
+                    <div v-for="(item, index) in phone_list" class="form-content">
+                        <input v-model="item.phone_number" placeholder="请输手机号码" type="text" class="form-control">
+                        <select v-model="item.proportion" class="form-control">
                             <option value="">请分配话费比例</option>
+                            <template v-if="phone_list.length === 1">
+                                <option value="100">100%</option>
+                            </template>
+                            <template v-else>
+                                <option v-for="item2 in 100" :value="item2">{{item2}}%</option>
+                            </template>
                         </select>
-                        <span class="btn btn-danger">删&nbsp;除</span>
+                        <span @click="delList(index)" class="btn btn-danger">删&nbsp;除</span>
                     </div>
                 </div>
 
@@ -58,8 +64,8 @@
 
             </div>
             <div class="btn-group">
-                <span class="btn btn-submit">提&nbsp;交</span>
-                <span class="btn btn-refresh">重&nbsp;置</span>
+                <span @click="submit" class="btn btn-submit">提&nbsp;交</span>
+                <span @click="refresh" class="btn btn-refresh">重&nbsp;置</span>
             </div>
         </div>
         <footer-components></footer-components>
@@ -122,7 +128,7 @@
         font-size: 14px;
         color: #333;
         display: inline-block;
-        font-weight: 100;
+        font-weight: 300;
         padding-left: 10px;
         letter-spacing: 1px;
     }
@@ -137,6 +143,7 @@
     }
     .form-group label a{
         color: #2d8cf0;
+        font-weight: 400;
         text-decoration: none;
     }
     .form-group label a:hover{
@@ -153,6 +160,9 @@
         border-radius: 2px;
         height: 40px;
         width: 100%;
+    }
+    .form-control:disabled{
+        background: #eee;
     }
     .btn-group{
         text-align: center;
@@ -201,8 +211,12 @@
         font-size: 12px; 
         color: #999;
     }
-    .phone-list{
+    .phone-list .form-content{
         overflow: hidden;
+        margin-bottom: 15px;
+    }
+    .phone-list .form-content:last-child {
+        margin-bottom: 0;
     }
     .phone-list input,
     .phone-list select,
@@ -210,16 +224,29 @@
         float: left;
     }
     .phone-list input {
+        position: relative;
+        z-index: 1;
         width: 40%;
         border-radius: 2px 0 0 2px;
     }
     .phone-list select {
         width: 40%;
+        margin-left: -3px;
+        margin-right: -3px;
         border-radius: 0;
+        padding: 0 13px;
+        /* appearance:none;
+        -moz-appearance:none;
+        -webkit-appearance:none; */
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        -khtml-border-radius: 0;
         border-left: 0;
         border-right: 0;
     }
     .phone-list .btn {
+        position: relative;
+        z-index: 1;
         width: 20%;
         line-height: 38px;
         padding: 0;
@@ -231,7 +258,83 @@
 <script>
 import FooterComponents from './footer.vue';
 export default {
-    components : {FooterComponents}
+    components : {FooterComponents},
+    data() {
+        return {
+            tab: 1, // 1 -> 移动集团用户 0 -> 非移动集团用户 默认 1
+            phone_list: [], // 手机号列表 { phone_number: 1556770XXXX, proportion: 100 }
+            institution_code: '', // 机构代码
+            marketing_number: '', //营销人员工号
+            id_number: '', // 身份证号 
+            company_name: ''// 公司名称
+        }
+    },
+    methods: {
+        refresh() {
+            [this.tab, this.phone_list, this.institution_code, this.marketing_number, this.id_number, this.company_name]
+            =
+            [1, [], '', '', '', '']
+        },
+        addList() {
+            // 最多不能超过4个手机号
+            if( this.phone_list.length === 4 ) {
+                alert('最多可添加4个手机号!');
+                return;
+            }
+            // 如果是第一个 默认100%比例
+            if( this.phone_list.length === 0 ) {
+                this.phone_list.push({ phone_list: '', proportion: '100' });
+            }
+            else {
+                this.phone_list.push({ phone_list: '', proportion: '' });
+            }
+        },
+        delList(index) {
+            this.phone_list.splice(index, 1);
+        },
+        submit() {
+
+            const {tab, phone_list, institution_code, marketing_number, id_number, company_name} = this;
+
+            $.ajax({
+                type: 'POST',
+                url: '/',
+                dataType: 'json',
+                data: {
+                    tab,
+                    phone_list,
+                    institution_code,
+                    marketing_number,
+                    id_number,
+                    company_name,
+                },
+                success(result) {
+                    console.log(result);
+                },
+                error(err) {
+                    alert('后台错误！请稍后重试……');
+                }
+
+            });
+        }
+    },
+    watch: { 
+        tab() {
+            [this.phone_list, this.institution_code, this.marketing_number, this.id_number, this.company_name]
+            =
+            [[], '', '', '', '']
+        },
+
+        phone_list: {
+            handler () {
+                if (this.phone_list.length === 1) {
+                    this.phone_list[0].proportion = '100';
+                }
+            },
+            deep: true,
+        },
+
+    }
 }
 </script>
 
