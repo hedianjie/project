@@ -14,6 +14,7 @@
         padding: 0 30px;
         border-bottom: 1px solid #000;
         box-shadow: 0 0 8px #252B3A;
+        z-index: 2;
     }
     .header .logo{
         height: 38px;
