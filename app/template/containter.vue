@@ -306,6 +306,7 @@ export default {
         submit() {
 
             const {err_tip, tab, phone_list, institution_code, marketing_number, id_number, company_name} = this;
+            console.log(institution_code)
 
             if (!institution_code.replace(/^ +| +$/, '')){
                 [err_tip.key, err_tip.tip] = ['institution_code', '请填写机构代码！'];
