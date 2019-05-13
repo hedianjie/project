@@ -1502,26 +1502,27 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
         submit() {
 
             const { err_tip, tab, phone_list, institution_code, marketing_number, id_number, company_name } = this;
+            console.log(institution_code);
 
-            if (!institution_code.replace(/^ +| +$/, '')) ;{
+            if (!institution_code.replace(/^ +| +$/, '')) {
                 [err_tip.key, err_tip.tip] = ['institution_code', '请填写机构代码！'];
                 alert('情填写机构代码！');
                 return;
             }
 
-            if (!marketing_number.replace(/^ +| +$/, '')) ;{
+            if (!marketing_number.replace(/^ +| +$/, '')) {
                 [err_tip.key, err_tip.tip] = ['marketing_number', '请填写营销人员工号！'];
                 alert('情填写营销人员工号！');
                 return;
             }
 
-            if (!id_number.replace(/^ +| +$/, '')) ;{
+            if (!id_number.replace(/^ +| +$/, '')) {
                 [err_tip.key, err_tip.tip] = ['id_number', '请填写身份证号码！'];
                 alert('情填写身份证号码！');
                 return;
             }
 
-            if (!company_name.replace(/^ +| +$/, '') && tab === 1) ;{
+            if (!company_name.replace(/^ +| +$/, '') && tab === 1) {
                 [err_tip.key, err_tip.tip] = ['company_name', '请填写客户就职单位名称！'];
                 alert('情填写客户就职单位名称！');
                 return;
@@ -1535,6 +1536,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
             let total = 0;
             for (let key of phone_list) {
                 total += Number(key.proportion);
+                if (!key.phone_number.replace(/^ +| +$/, '')) {
+                    alert('请输入正确的手机号！');
+                    return;
+                }
             }
 
             if (total !== 100) {

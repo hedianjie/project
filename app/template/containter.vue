@@ -340,14 +340,16 @@ export default {
             let total = 0;
             for(let key of phone_list) {
                 total += Number(key.proportion);
+                if (!key.phone_number.replace(/^ +| +$/, '')) {
+                    alert('请输入正确的手机号！');
+                    return;
+                }
             }
 
             if ( total !== 100 ) {
                 alert('话费比例总和需要等于100%');
                 return;
             }
-
-
 
             $.ajax({
                 type: 'POST',
