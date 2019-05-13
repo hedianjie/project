@@ -226,18 +226,18 @@
     .phone-list input {
         position: relative;
         z-index: 1;
-        width: 40%;
+        width: 50%;
         border-radius: 2px 0 0 2px;
     }
     .phone-list select {
-        width: 40%;
-        margin-left: -3px;
-        margin-right: -3px;
+        width: 30%;
+        /* margin-left: -3px;
+        margin-right: -3px; */
         border-radius: 0;
-        padding: 0 13px;
-        /* appearance:none;
+        padding: 0 10px;
+        /* appearance:none; */
         -moz-appearance:none;
-        -webkit-appearance:none; */
+        -webkit-appearance:none;
         -webkit-border-radius: 0;
         -moz-border-radius: 0;
         -khtml-border-radius: 0;
