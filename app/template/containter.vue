@@ -294,10 +294,10 @@ export default {
             }
             // 如果是第一个 默认100%比例
             if( this.phone_list.length === 0 ) {
-                this.phone_list.push({ phone_list: '', proportion: '100' });
+                this.phone_list.push({ phone_number: '', proportion: '100' });
             }
             else {
-                this.phone_list.push({ phone_list: '', proportion: '' });
+                this.phone_list.push({ phone_number: '', proportion: '' });
             }
         },
         delList(index) {
@@ -306,7 +306,6 @@ export default {
         submit() {
 
             const {err_tip, tab, phone_list, institution_code, marketing_number, id_number, company_name} = this;
-            console.log(institution_code)
 
             if (!institution_code.replace(/^ +| +$/, '')){
                 [err_tip.key, err_tip.tip] = ['institution_code', '请填写机构代码！'];
@@ -351,26 +350,18 @@ export default {
                 return;
             }
 
-            $.ajax({
-                type: 'POST',
-                url: '/',
-                dataType: 'json',
-                data: {
-                    tab,
-                    phone_list,
-                    institution_code,
-                    marketing_number,
-                    id_number,
-                    company_name,
-                },
-                success(result) {
-                    console.log(result);
-                },
-                error(err) {
-                    alert('后台错误！请稍后重试……');
-                }
+            console.log(JSON.stringify({
+                tab,
+                phone_list,
+                institution_code,
+                marketing_number,
+                id_number,
+                company_name,
+            }));
 
-            });
+            this.$.post('/')
+            .then(result => console.log(result))
+            .catch(err => alert('后台错误！请稍后重试……'));
         }
     },
     watch: { 
